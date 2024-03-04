@@ -1,0 +1,51 @@
+.page {
+  height: 100%;
+  max-height: auto;
+  max-width: 100%;
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+}
+
+.form {
+  padding: 10px;
+  padding-left: 0;
+  max-width: 350px;
+}
+
+.field {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 30px;
+  justify-content: space-between;
+}
+
+select {
+  padding: 10px 12px;
+  width: 150px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+}
+
+input {
+  padding: 10px 12px;
+  width: 150px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+}
+
+.button {
+  padding: 8px 20px;
+  width: 150px;
+  text-decoration: none;
+  color: #000000;
+  background-color: #efefef;
+  border: 1px solid #000000;
+  border-radius: 5px;
+}
+
+.button:hover {
+  opacity: 0.5;
+}

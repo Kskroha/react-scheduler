@@ -3,9 +3,13 @@ import { DAYS, HOURS, MEMBERS } from "../services/mocks/constants";
 import { TEvent } from "../types/types";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "../services/hooks/hooks";
-import { createEvent, updateState } from "../services/features/schedule/scheduleSlice";
+import {
+  createEvent,
+  updateState,
+} from "../services/features/schedule/scheduleSlice";
 import { useNavigate } from "react-router-dom";
-import Alert from 'react-bootstrap/Alert';
+import styles from "./ new-event.module.css";
+import Alert from "react-bootstrap/Alert";
 
 function NewEventPage() {
   const [event, setEvent] = useState<TEvent>({
@@ -17,9 +21,13 @@ function NewEventPage() {
   });
 
   const dispatch = useAppDispatch();
-  const createEventSuccess = useAppSelector(state => state.schedule.createEventSuccess);
-  const createEventFailed = useAppSelector(state => state.schedule.createEventFailed);
-  
+  const createEventSuccess = useAppSelector(
+    (state) => state.schedule.createEventSuccess
+  );
+  const createEventFailed = useAppSelector(
+    (state) => state.schedule.createEventFailed
+  );
+
   const createOptions = (array: string[] | number[]) => {
     return array.map((text: string | number, index: number) => {
       return (
@@ -60,27 +68,39 @@ function NewEventPage() {
     // if (createEventSuccess) {
     //   navigate(-1);
     // }
-  }, [createEventSuccess, navigate])
+  }, [createEventSuccess, navigate]);
 
   return (
-    <div>
+    <div className={styles.page}>
       <main>
-        {createEventFailed && <Alert key="danger" variant="danger">Failed to create an event. The slot is already booked.</Alert>}
+        {createEventFailed && (
+          <Alert key="danger" variant="danger">
+            Failed to create an event. The slot is already booked.
+          </Alert>
+        )}
         <h1>Create new event</h1>
-        <form action="/" method="post" onSubmit={handleSubmit} autoComplete="off">
-          <label htmlFor="eventName">Name of the event:</label>
-          <input
-            type="text"
-            id="eventName"
-            onChange={(evt) =>
-              setEvent({
-                ...event,
-                name: evt.target.value,
-              })
-            }
-            required
-          />
-          <div>
+        <form
+          action="/"
+          method="post"
+          onSubmit={handleSubmit}
+          autoComplete="off"
+          className={styles.form}
+        >
+          <div className={styles.field}>
+            <label htmlFor="eventName">Name of the event:</label>
+            <input
+              type="text"
+              id="eventName"
+              onChange={(evt) =>
+                setEvent({
+                  ...event,
+                  name: evt.target.value,
+                })
+              }
+              required
+            />
+          </div>
+          <div className={styles.field}>
             <label htmlFor="participants">Participants:</label>
             <select
               value={event.participants}
@@ -93,7 +113,7 @@ function NewEventPage() {
               {createOptions(MEMBERS)}
             </select>
           </div>
-          <div>
+          <div className={styles.field}>
             <label htmlFor="day">Day:</label>
             <select
               value={event.day}
@@ -110,7 +130,7 @@ function NewEventPage() {
               {createOptions(DAYS)}
             </select>
           </div>
-          <div>
+          <div className={styles.field}>
             <label htmlFor="time">Time:</label>
             <select
               value={event.time}
@@ -127,8 +147,8 @@ function NewEventPage() {
               {createOptions(HOURS)}
             </select>
           </div>
-          {/* <button type="reset" onClick={handleClick}>Cancel</button> */}
-          <button type="submit">Create</button>
+          {/* <button type="reset" className={styles.button} onClick={handleClick}>Cancel</button> */}
+          <button className={styles.button} type="submit">Create</button>
         </form>
       </main>
     </div>
