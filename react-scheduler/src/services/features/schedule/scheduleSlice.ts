@@ -6,12 +6,14 @@ export interface ScheduleState {
   events: TEvent[];
   createEventFailed: boolean;
   createEventSuccess: boolean;
+  activeFilter: string;
 }
 
 const initialState: ScheduleState = {
   events: [],
   createEventFailed: false,
-  createEventSuccess: false
+  createEventSuccess: false,
+  activeFilter: "",
 };
 
 export const scheduleSlice = createSlice({
@@ -19,7 +21,13 @@ export const scheduleSlice = createSlice({
   initialState,
   reducers: {
     createEvent: (state, action: PayloadAction<TEvent>) => {
-      if (state.events.some((event) => event.day === action.payload.day && event.time === action.payload.time)) {
+      if (
+        state.events.some(
+          (event) =>
+            event.day === action.payload.day &&
+            event.time === action.payload.time
+        )
+      ) {
         state.createEventFailed = true;
         return;
       }
@@ -27,15 +35,35 @@ export const scheduleSlice = createSlice({
       state.createEventSuccess = true;
     },
     deleteEvent: (state, action: PayloadAction<string>) => {
-      state.events = state.events.filter((event) => event.id !== action.payload);
+      state.events = state.events.filter(
+        (event) => event.id !== action.payload
+      );
     },
     updateState: (state) => {
       state.createEventFailed = false;
       state.createEventSuccess = false;
     },
+    setActiveFilter: (state, action: PayloadAction<string>) => {
+      state.activeFilter = action.payload;
+    },
   },
 });
 
-export const { createEvent, deleteEvent, updateState } = scheduleSlice.actions;
+export const getFilteredEvents = (events: TEvent[], activeFilter: string) => {
+  if (events) {
+    if (activeFilter === "all") {
+      return events;
+    }
+    const filteredEvents = [];
+  
+    for (const event of events) {
+      if (event.participants.includes(activeFilter)) filteredEvents.push(event);
+    }
+  
+    return filteredEvents as TEvent[];
+  }
+};
+
+export const { createEvent, deleteEvent, updateState, setActiveFilter } = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;

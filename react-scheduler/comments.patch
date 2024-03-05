@@ -1,0 +1,172 @@
+From 6b07f7a9086bc662eb5457214edc56ca2c1e6908 Mon Sep 17 00:00:00 2001
+From: taneros <taneros@duck.com>
+Date: Mon, 4 Mar 2024 17:48:02 +0300
+Subject: [PATCH] comments
+
+---
+ react-scheduler/Todo.md                 | 23 ++++++++++++++++
+ react-scheduler/src/main.tsx            |  4 +--
+ react-scheduler/src/pages/new-event.tsx | 19 ++++++++++++++
+ react-scheduler/tsconfig.json           | 35 +++++++++++++------------
+ react-scheduler/tsconfig.node.json      | 11 --------
+ 5 files changed, 62 insertions(+), 30 deletions(-)
+ create mode 100644 react-scheduler/Todo.md
+ delete mode 100644 react-scheduler/tsconfig.node.json
+
+diff --git a/react-scheduler/Todo.md b/react-scheduler/Todo.md
+new file mode 100644
+index 0000000..1172822
+--- /dev/null
++++ b/react-scheduler/Todo.md
+@@ -0,0 +1,23 @@
++my-react-app/
++├── public/
++│   └── index.html
++├── src/
++│   ├── app/
++│   │   ├── store.js            # Redux store configuration
++│   │   └── rootReducer.js      # Root reducer combining all reducers
++│   ├── features/
++│   │   ├── categories/
++│   │   │   ├── categoriesSlice.js  # Redux slice for categories feature
++│   │   │   └── Categories.js       # React component for categories feature
++│   │   └── ...
++│   ├── components/
++│   │   ├── Header.js           # Example React component
++│   │   └── ...
++│   ├── pages/
++│   │   ├── Home.js             # Example React component/page
++│   │   └── ...
++│   ├── index.js                # Main entry point of the application
++│   └── App.css                 # Global styles
++├── .gitignore
++├── package.json
++└── README.md
+diff --git a/react-scheduler/src/main.tsx b/react-scheduler/src/main.tsx
+index 0d3f5db..77873df 100644
+--- a/react-scheduler/src/main.tsx
++++ b/react-scheduler/src/main.tsx
+@@ -1,8 +1,8 @@
+ import React from "react";
+ import ReactDOM from "react-dom/client";
+-import App from "./App.tsx";
++import App from "./App";
+ import { BrowserRouter } from "react-router-dom";
+-import { store } from "./services/store.ts";
++import { store } from "./services/store";
+ import { Provider } from "react-redux";
+ import 'bootstrap/dist/css/bootstrap.min.css';
+ 
+diff --git a/react-scheduler/src/pages/new-event.tsx b/react-scheduler/src/pages/new-event.tsx
+index 7e606ea..b92ebc8 100644
+--- a/react-scheduler/src/pages/new-event.tsx
++++ b/react-scheduler/src/pages/new-event.tsx
+@@ -7,6 +7,12 @@ import { createEvent, updateState } from "../services/features/schedule/schedule
+ import { useNavigate } from "react-router-dom";
+ import Alert from 'react-bootstrap/Alert';
+ 
++
++//TODO
++/**
++  * rename component to NewEventPage (camel case)
++  **/
++
+ function NewEventPage() {
+   const [event, setEvent] = useState<TEvent>({
+     name: "",
+@@ -44,6 +50,11 @@ function NewEventPage() {
+     });
+   };
+ 
++  //TODO
++  /**
++    * stick to one type of functions
++    **/
++
+   function handleSubmit(e: FormEvent<HTMLFormElement>) {
+     e.preventDefault();
+     dispatch(createEvent(event));
+@@ -58,6 +69,14 @@ function NewEventPage() {
+     }
+   }, [createEventSuccess, navigate])
+ 
++  //TODO
++  /**
++    * handler for setEvent({
++                ...event,
++                name: evt.target.value,
++              })
++    **/
++
+   return (
+     <div>
+       <main>
+diff --git a/react-scheduler/tsconfig.json b/react-scheduler/tsconfig.json
+index a7fc6fb..5045a5d 100644
+--- a/react-scheduler/tsconfig.json
++++ b/react-scheduler/tsconfig.json
+@@ -1,25 +1,26 @@
+ {
+   "compilerOptions": {
+-    "target": "ES2020",
++    "target": "ESNext",
+     "useDefineForClassFields": true,
+-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
++    "lib": [
++      "DOM",
++      "DOM.Iterable",
++      "ESNext"
++    ],
++    "allowJs": false,
++    "skipLibCheck": false,
++    "esModuleInterop": false,
++    "allowSyntheticDefaultImports": true,
++    "strict": true,
++    "forceConsistentCasingInFileNames": true,
+     "module": "ESNext",
+-    "skipLibCheck": true,
+-
+-    /* Bundler mode */
+-    "moduleResolution": "bundler",
+-    "allowImportingTsExtensions": true,
++    "moduleResolution": "Node",
+     "resolveJsonModule": true,
+     "isolatedModules": true,
+     "noEmit": true,
+-    "jsx": "react-jsx",
+-
+-    /* Linting */
+-    "strict": true,
+-    "noUnusedLocals": true,
+-    "noUnusedParameters": true,
+-    "noFallthroughCasesInSwitch": true
++    "jsx": "react-jsx"
+   },
+-  "include": ["src"],
+-  "references": [{ "path": "./tsconfig.node.json" }]
+-}
++  "include": [
++    "./src"
++  ]
++}
+\ No newline at end of file
+diff --git a/react-scheduler/tsconfig.node.json b/react-scheduler/tsconfig.node.json
+deleted file mode 100644
+index 97ede7e..0000000
+--- a/react-scheduler/tsconfig.node.json
++++ /dev/null
+@@ -1,11 +0,0 @@
+-{
+-  "compilerOptions": {
+-    "composite": true,
+-    "skipLibCheck": true,
+-    "module": "ESNext",
+-    "moduleResolution": "bundler",
+-    "allowSyntheticDefaultImports": true,
+-    "strict": true
+-  },
+-  "include": ["vite.config.ts"]
+-}
+-- 
+2.37.1 (Apple Git-137.1)
+

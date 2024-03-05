@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, FormEvent, useEffect, useState } from "react";
 import { DAYS, HOURS, MEMBERS } from "../services/mocks/constants";
 import { TEvent } from "../types/types";
 import { v4 as uuidv4 } from "uuid";
@@ -8,7 +8,7 @@ import {
   updateState,
 } from "../services/features/schedule/scheduleSlice";
 import { useNavigate } from "react-router-dom";
-import styles from "./ new-event.module.css";
+import styles from "./NewEvent.module.css"
 import Alert from "react-bootstrap/Alert";
 
 function NewEventPage() {
@@ -21,6 +21,7 @@ function NewEventPage() {
   });
 
   const dispatch = useAppDispatch();
+
   const createEventSuccess = useAppSelector(
     (state) => state.schedule.createEventSuccess
   );
@@ -38,7 +39,7 @@ function NewEventPage() {
     });
   };
 
-  const handleChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+  const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const options = e.target.options;
     const values = [];
     for (let i = 0, l = options.length; i < l; i++) {
@@ -52,23 +53,42 @@ function NewEventPage() {
     });
   };
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  // react-hook-form //ZOD TS
+  //
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    const isValid = !Object.values(event).some((item) => item === '')
+
+    if (!isValid) {
+      return;
+    }
+
     dispatch(createEvent(event));
-    setTimeout(() => dispatch(updateState()), 5000);
+    setTimeout(() => dispatch(updateState()), 1000);
+  };
+
+  const handleSetEvent = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, key: string) => {
+    setEvent({
+      ...event,
+      [key]: e.target.value,
+    })
   }
 
   const navigate = useNavigate();
 
-  // const handleClick = () => {
-  //   navigate(-1);
-  // };
+  const handleClick = () => {
+    navigate(-1);
+  };
 
   useEffect(() => {
-    // if (createEventSuccess) {
-    //   navigate(-1);
-    // }
+    if (createEventSuccess) {
+      navigate(-1);
+    }
   }, [createEventSuccess, navigate]);
+
+  const isFormValid = !Object.values(event).some((item) => item === '');
 
   return (
     <div className={styles.page}>
@@ -91,12 +111,7 @@ function NewEventPage() {
             <input
               type="text"
               id="eventName"
-              onChange={(evt) =>
-                setEvent({
-                  ...event,
-                  name: evt.target.value,
-                })
-              }
+              onChange={(e) => handleSetEvent(e, 'name')}
               required
             />
           </div>
@@ -119,14 +134,10 @@ function NewEventPage() {
               value={event.day}
               name="day"
               id="day"
-              onChange={(evt) =>
-                setEvent({
-                  ...event,
-                  day: evt.target.value,
-                })
-              }
+              onChange={(e) => handleSetEvent(e, 'day')}
               required
             >
+              <option selected>Day</option>
               {createOptions(DAYS)}
             </select>
           </div>
@@ -136,19 +147,17 @@ function NewEventPage() {
               value={event.time}
               name="time"
               id="time"
-              onChange={(evt) =>
-                setEvent({
-                  ...event,
-                  time: evt.target.value,
-                })
-              }
+              onChange={(e) => handleSetEvent(e, 'time')}
               required
             >
+              <option selected>Time</option>
               {createOptions(HOURS)}
             </select>
           </div>
-          {/* <button type="reset" className={styles.button} onClick={handleClick}>Cancel</button> */}
-          <button className={styles.button} type="submit">Create</button>
+          <button type="reset" className={styles.button} onClick={handleClick}>Cancel</button>
+          <button disabled={!isFormValid} className={styles.button} type="submit">
+            Create
+          </button>
         </form>
       </main>
     </div>
