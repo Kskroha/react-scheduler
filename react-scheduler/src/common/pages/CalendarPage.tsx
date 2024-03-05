@@ -1,11 +1,11 @@
 // import Table from "react-bootstrap/Table";
-import { DAYS, HOURS, MEMBERS } from "../services/mocks/constants";
+import { DAYS, HOURS, MEMBERS } from "../mocks/constants";
 import TableCell from "../components/TableCell";
 import { NavLink } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../services/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import styles from "./Calendar.module.css";
-import { setActiveFilter } from "../services/features/schedule/scheduleSlice";
-import { getFilteredEvents } from "../services/features/schedule/scheduleSlice";
+import { setActiveFilter } from "../../features/schedule/scheduleSlice";
+import { getFilteredEvents } from "../../features/schedule/scheduleSlice";
 import { useMemo } from "react";
 
 function CalendarPage() {

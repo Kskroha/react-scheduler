@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { TEvent } from "../types/types";
-import { deleteEvent } from "../services/features/schedule/scheduleSlice";
-import { useAppDispatch } from "../services/hooks/hooks";
+import { TEvent } from "../../types/types";
+import { deleteEvent } from "../../features/schedule/scheduleSlice";
+import { useAppDispatch } from "../hooks/hooks";
 import styles from "./TableCell.module.css";
 
 interface ITableCell {

@@ -1,8 +1,8 @@
 import React from "react";
 import { TEvent } from "../../types/types";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../store";
-import { RootState } from "../store";
+import { AppDispatch } from "../../app/store";
+import { RootState } from "../../app/store";
 
 export function useForm(inputValues: TEvent) {
   const [values, setValues] = React.useState<TEvent>(inputValues);

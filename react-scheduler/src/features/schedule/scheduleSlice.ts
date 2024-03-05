@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { TEvent } from "../../../types/types";
+import { TEvent } from "../../types/types";
 
 export interface ScheduleState {
   events: TEvent[];
@@ -60,7 +60,7 @@ export const getFilteredEvents = (events: TEvent[], activeFilter: string) => {
       if (event.participants.includes(activeFilter)) filteredEvents.push(event);
     }
   
-    return filteredEvents as TEvent[];
+    return filteredEvents;
   }
 };
 

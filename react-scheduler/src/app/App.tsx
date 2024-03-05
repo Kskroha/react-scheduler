@@ -1,4 +1,4 @@
-import { CalendarPage, NewEventPage } from "./pages";
+import { CalendarPage, NewEventPage } from "../common/pages";
 import { Route, Routes } from "react-router-dom";
 
 function App() {

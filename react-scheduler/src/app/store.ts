@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import scheduleReducer from "./features/schedule/scheduleSlice";
+import scheduleReducer from "../features/schedule/scheduleSlice";
 import {
   FLUSH,
   REHYDRATE,

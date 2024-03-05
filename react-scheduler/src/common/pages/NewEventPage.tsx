@@ -1,12 +1,12 @@
 import { ChangeEvent, ChangeEventHandler, FormEvent, useEffect, useState } from "react";
-import { DAYS, HOURS, MEMBERS } from "../services/mocks/constants";
-import { TEvent } from "../types/types";
+import { DAYS, HOURS, MEMBERS } from "../mocks/constants";
+import { TEvent } from "../../types/types";
 import { v4 as uuidv4 } from "uuid";
-import { useAppDispatch, useAppSelector } from "../services/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import {
   createEvent,
   updateState,
-} from "../services/features/schedule/scheduleSlice";
+} from "../../features/schedule/scheduleSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./NewEvent.module.css"
 import Alert from "react-bootstrap/Alert";
@@ -154,10 +154,12 @@ function NewEventPage() {
               {createOptions(HOURS)}
             </select>
           </div>
-          <button type="reset" className={styles.button} onClick={handleClick}>Cancel</button>
-          <button disabled={!isFormValid} className={styles.button} type="submit">
-            Create
-          </button>
+          <div className={styles.buttons}>
+            <button disabled={!isFormValid} className={styles.button} type="submit">
+              Create
+            </button>
+            <button type="reset" className={styles.button} onClick={handleClick}>Cancel</button>
+          </div>
         </form>
       </main>
     </div>
