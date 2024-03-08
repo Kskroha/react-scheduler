@@ -45,7 +45,7 @@ export const scheduleSlice = createSlice({
     },
     setActiveFilter: (state, action: PayloadAction<string>) => {
       state.activeFilter = action.payload;
-    },
+    }
   },
 });
 

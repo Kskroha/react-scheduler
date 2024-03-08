@@ -3,7 +3,7 @@ import { DAYS, HOURS, MEMBERS } from "../mocks/constants";
 import TableCell from "../components/TableCell";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
-import styles from "./Calendar.module.css";
+import styles from "./CalendarPage.module.css";
 import { setActiveFilter } from "../../features/schedule/scheduleSlice";
 import { getFilteredEvents } from "../../features/schedule/scheduleSlice";
 import { useMemo } from "react";
@@ -30,7 +30,9 @@ function CalendarPage() {
           >
             <option value="all">All members</option>
             {MEMBERS.map((member) => (
-              <option key={member} value={member}>{member}</option>
+              <option key={member} value={member}>
+                {member}
+              </option>
             ))}
           </select>
           <NavLink className={styles.link} to="/create-event">
@@ -58,7 +60,14 @@ function CalendarPage() {
                   const schedule = filtered?.find(
                     (event) => event.day === day && event.time === hour
                   );
-                  return <TableCell key={day + hour} event={schedule ?? null}></TableCell>;
+                  return (
+                    <TableCell
+                      key={day + hour}
+                      event={schedule ?? null}
+                      day={day}
+                      time={hour}
+                    ></TableCell>
+                  );
                 })}
               </tr>
             ))}

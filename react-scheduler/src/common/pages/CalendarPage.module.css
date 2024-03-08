@@ -26,9 +26,10 @@
 }
 
 .table td {
+  width: 80px;
+  height: 80px;
 	background: #efefef;
   font-weight: bold;
-	padding: 5px;
   text-align: center;
 	border: 1px solid #000000;
 }
