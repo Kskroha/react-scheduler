@@ -47,10 +47,14 @@ input {
 }
 
 .button:hover {
-  opacity: 0.5;
+  background-color: #bfbfbf;
 }
 
 .buttons {
   display: flex;
   gap: 20px;
+}
+
+.error {
+  color: rgb(249, 119, 141);
 }

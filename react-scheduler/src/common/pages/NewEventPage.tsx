@@ -1,6 +1,5 @@
-import { ChangeEvent, ChangeEventHandler, FormEvent, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { DAYS, HOURS, MEMBERS } from "../mocks/constants";
-import { TEvent } from "../../types/types";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import {
@@ -8,16 +7,47 @@ import {
   updateState,
 } from "../../features/schedule/scheduleSlice";
 import { useNavigate } from "react-router-dom";
-import styles from "./NewEvent.module.css"
+import styles from "./NewEvent.module.css";
 import Alert from "react-bootstrap/Alert";
+import { SubmitHandler, useForm } from "react-hook-form";
+
+enum ParticipantsEnum {
+  Ann = "Ann",
+  Maria = "Maria",
+  Bob = "Bob",
+  Max = "Max",
+  Alex = "Alex",
+}
+
+type Time = "10:00" | "11:00" | "12:00" | "13:00" | "14:00" | "15:00";
+
+enum DayEnum {
+  Monday = "Monday",
+  Tuesday = "Tuesday",
+  Wednesday = "Wednesday",
+  Thursday = "Thursday",
+  Friday = "Friday",
+}
+
+interface IFormInput {
+  eventName: string;
+  participants: ParticipantsEnum[];
+  day: DayEnum;
+  time: Time;
+}
 
 function NewEventPage() {
-  const [event, setEvent] = useState<TEvent>({
-    name: "",
-    participants: [],
-    day: "",
-    time: "",
-    id: uuidv4(),
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm({
+    defaultValues: {
+      eventName: "",
+      participants: "",
+      day: "",
+      time: "",
+    },
   });
 
   const dispatch = useAppDispatch();
@@ -39,42 +69,16 @@ function NewEventPage() {
     });
   };
 
-  const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
-    const options = e.target.options;
-    const values = [];
-    for (let i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        values.push(options[i].value);
-      }
-    }
-    setEvent({
-      ...event,
-      participants: values,
-    });
-  };
-
-  // react-hook-form //ZOD TS
-  //
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    const isValid = !Object.values(event).some((item) => item === '')
-
-    if (!isValid) {
-      return;
-    }
-
-    dispatch(createEvent(event));
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+    dispatch(
+      createEvent({
+        ...data,
+        id: uuidv4(),
+      })
+    );
     setTimeout(() => dispatch(updateState()), 1000);
   };
-
-  const handleSetEvent = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, key: string) => {
-    setEvent({
-      ...event,
-      [key]: e.target.value,
-    })
-  }
 
   const navigate = useNavigate();
 
@@ -88,8 +92,6 @@ function NewEventPage() {
     }
   }, [createEventSuccess, navigate]);
 
-  const isFormValid = !Object.values(event).some((item) => item === '');
-
   return (
     <div className={styles.page}>
       <main>
@@ -102,63 +104,65 @@ function NewEventPage() {
         <form
           action="/"
           method="post"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
           className={styles.form}
         >
+
+          {errors.eventName && <p className={styles.error} role="alert">{errors.eventName.message}</p>}
           <div className={styles.field}>
             <label htmlFor="eventName">Name of the event:</label>
             <input
-              type="text"
-              id="eventName"
-              onChange={(e) => handleSetEvent(e, 'name')}
-              required
+              {...register("eventName", {
+                required: "Event name is required",
+                minLength: 5,
+                maxLength: 20,
+              })}
             />
           </div>
+
+          {errors.participants && <p className={styles.error}  role="alert">{errors.participants.message}</p>}
           <div className={styles.field}>
             <label htmlFor="participants">Participants:</label>
             <select
-              value={event.participants}
-              name="participants"
-              id="participants"
-              onChange={handleChange}
+              {...register("participants", { required: "Please choose participants" })}
               multiple
-              required
             >
               {createOptions(MEMBERS)}
             </select>
           </div>
+
+          {errors.day && <p className={styles.error}  role="alert">{errors.day.message}</p>}
           <div className={styles.field}>
             <label htmlFor="day">Day:</label>
-            <select
-              value={event.day}
-              name="day"
-              id="day"
-              onChange={(e) => handleSetEvent(e, 'day')}
-              required
-            >
-              <option selected>Day</option>
+            <select {...register("day", { required: "Day is required" })}>
               {createOptions(DAYS)}
             </select>
           </div>
+
+          {errors.time && <p className={styles.error}  role="alert">{errors.time.message}</p>}
           <div className={styles.field}>
             <label htmlFor="time">Time:</label>
-            <select
-              value={event.time}
-              name="time"
-              id="time"
-              onChange={(e) => handleSetEvent(e, 'time')}
-              required
-            >
-              <option selected>Time</option>
+            <select {...register("time", { required: "Time is required" })}>
               {createOptions(HOURS)}
             </select>
           </div>
+
           <div className={styles.buttons}>
-            <button disabled={!isFormValid} className={styles.button} type="submit">
+            <button
+              // disabled={!isFormValid}
+              className={styles.button}
+              type="submit"
+            >
               Create
             </button>
-            <button type="reset" className={styles.button} onClick={handleClick}>Cancel</button>
+            <button
+              type="reset"
+              className={styles.button}
+              onClick={handleClick}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </main>

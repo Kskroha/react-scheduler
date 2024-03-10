@@ -1,5 +1,5 @@
 export type TEvent = {
-  name: string;
+  eventName: string;
   participants: string[];
   day: string;
   time: string;

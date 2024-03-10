@@ -65,7 +65,7 @@ export const TableCell: FC<ITableCell> = ({ event, day, time }) => {
         {event && (
           <div className={styles.card}>
             <div className={styles.cardInner}>
-              <p className={styles.cardName}>{event.name}</p>
+              <p className={styles.cardName}>{event.eventName}</p>
               <button
                 type="button"
                 onClick={handleClick}
