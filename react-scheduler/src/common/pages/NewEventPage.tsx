@@ -115,7 +115,7 @@ function NewEventPage() {
             <input
               {...register("eventName", {
                 required: "Event name is required",
-                minLength: 5,
+                minLength: 3,
                 maxLength: 20,
               })}
             />
