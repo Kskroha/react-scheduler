@@ -17,15 +17,9 @@ interface ITableCell {
 export const TableCell: FC<ITableCell> = ({ event, day, time }) => {
   const dispatch = useAppDispatch();
 
-  const handleClick = () => {
-    if (event) {
-      dispatch(deleteEvent(event.id));
-    }
-  };
-
   const ref = useRef<HTMLTableCellElement>(null);
 
-  const [{ isDragging }, drop] = useDrop({
+  const [{ isDragging }, drop] = useDrop<TEvent, undefined, { isDragging: boolean }>({
     accept: "cell",
     collect(monitor) {
       return {
@@ -54,6 +48,12 @@ export const TableCell: FC<ITableCell> = ({ event, day, time }) => {
   });
 
   drag(drop(ref));
+
+  const handleClick = () => {
+    if (event) {
+      dispatch(deleteEvent(event.id));
+    }
+  };
 
   return (
     <>

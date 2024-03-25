@@ -1,22 +1,16 @@
 // import Table from "react-bootstrap/Table";
-import { DAYS, HOURS, MEMBERS } from "../mocks/constants";
-import TableCell from "../components/TableCell";
+import { DAYS, HOURS, MEMBERS } from "../../mocks/constants";
+import TableCell from "../../components/TableCell";
 import { NavLink } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import styles from "./CalendarPage.module.css";
-import { setActiveFilter } from "../../features/schedule/scheduleSlice";
-import { getFilteredEvents } from "../../features/schedule/scheduleSlice";
-import { useMemo } from "react";
+import { setActiveFilter } from "../../../features/schedule/scheduleSlice";
+import { getFilteredEvents } from "../../utils/selectors";
 
 function CalendarPage() {
   const dispatch = useAppDispatch();
 
-  const events = useAppSelector((state) => state.schedule.events);
-  const activeFilter = useAppSelector((state) => state.schedule.activeFilter);
-
-  const filtered = useMemo(() => {
-    return getFilteredEvents(events, activeFilter);
-  }, [events, activeFilter]);
+  const events = useAppSelector(getFilteredEvents);
 
   return (
     <div>
@@ -57,7 +51,7 @@ function CalendarPage() {
                   {hour}
                 </td>
                 {DAYS.map((day) => {
-                  const schedule = filtered?.find(
+                  const schedule = events.find(
                     (event) => event.day === day && event.time === hour
                   );
                   return (
@@ -66,7 +60,7 @@ function CalendarPage() {
                       event={schedule ?? null}
                       day={day}
                       time={hour}
-                    ></TableCell>
+                    />
                   );
                 })}
               </tr>

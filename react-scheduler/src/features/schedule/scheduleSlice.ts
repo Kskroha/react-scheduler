@@ -13,7 +13,7 @@ const initialState: ScheduleState = {
   events: [],
   createEventFailed: false,
   createEventSuccess: false,
-  activeFilter: "",
+  activeFilter: "all",
 };
 
 export const scheduleSlice = createSlice({
@@ -48,21 +48,6 @@ export const scheduleSlice = createSlice({
     }
   },
 });
-
-export const getFilteredEvents = (events: TEvent[], activeFilter: string) => {
-  if (events) {
-    if (activeFilter === "all") {
-      return events;
-    }
-    const filteredEvents = [];
-  
-    for (const event of events) {
-      if (event.participants.includes(activeFilter)) filteredEvents.push(event);
-    }
-  
-    return filteredEvents;
-  }
-};
 
 export const { createEvent, deleteEvent, updateState, setActiveFilter } = scheduleSlice.actions;
 

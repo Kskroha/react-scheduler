@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { DAYS, HOURS, MEMBERS } from "../mocks/constants";
+import { DAYS, HOURS, MEMBERS } from "../../mocks/constants";
 import { v4 as uuidv4 } from "uuid";
-import { useAppDispatch, useAppSelector } from "../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import {
   createEvent,
   updateState,
-} from "../../features/schedule/scheduleSlice";
+} from "../../../features/schedule/scheduleSlice";
 import { useNavigate } from "react-router-dom";
 import styles from "./NewEvent.module.css";
 import Alert from "react-bootstrap/Alert";
@@ -31,10 +31,12 @@ enum DayEnum {
 
 interface IFormInput {
   eventName: string;
-  participants: ParticipantsEnum[];
+  participants: ParticipantsEnum;
   day: DayEnum;
   time: Time;
 }
+
+// ZOD
 
 function NewEventPage() {
   const {
@@ -43,10 +45,10 @@ function NewEventPage() {
     handleSubmit,
   } = useForm({
     defaultValues: {
-      eventName: "",
-      participants: "",
-      day: "",
-      time: "",
+      eventName: "Meeting",
+      participants: [],
+      day: "Monday",
+      time: "10:00",
     },
   });
 
@@ -108,8 +110,11 @@ function NewEventPage() {
           autoComplete="off"
           className={styles.form}
         >
-
-          {errors.eventName && <p className={styles.error} role="alert">{errors.eventName.message}</p>}
+          {errors.eventName && (
+            <p className={styles.error} role="alert">
+              {errors.eventName.message}
+            </p>
+          )}
           <div className={styles.field}>
             <label htmlFor="eventName">Name of the event:</label>
             <input
@@ -121,18 +126,28 @@ function NewEventPage() {
             />
           </div>
 
-          {errors.participants && <p className={styles.error}  role="alert">{errors.participants.message}</p>}
+          {errors.participants && (
+            <p className={styles.error} role="alert">
+              {errors.participants.message}
+            </p>
+          )}
           <div className={styles.field}>
             <label htmlFor="participants">Participants:</label>
             <select
-              {...register("participants", { required: "Please choose participants" })}
+              {...register("participants", {
+                required: "Please choose participants",
+              })}
               multiple
             >
               {createOptions(MEMBERS)}
             </select>
           </div>
 
-          {errors.day && <p className={styles.error}  role="alert">{errors.day.message}</p>}
+          {errors.day && (
+            <p className={styles.error} role="alert">
+              {errors.day.message}
+            </p>
+          )}
           <div className={styles.field}>
             <label htmlFor="day">Day:</label>
             <select {...register("day", { required: "Day is required" })}>
@@ -140,7 +155,11 @@ function NewEventPage() {
             </select>
           </div>
 
-          {errors.time && <p className={styles.error}  role="alert">{errors.time.message}</p>}
+          {errors.time && (
+            <p className={styles.error} role="alert">
+              {errors.time.message}
+            </p>
+          )}
           <div className={styles.field}>
             <label htmlFor="time">Time:</label>
             <select {...register("time", { required: "Time is required" })}>
