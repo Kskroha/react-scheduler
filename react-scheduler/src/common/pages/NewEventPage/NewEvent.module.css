@@ -34,14 +34,14 @@ input {
   padding: 8px 20px;
   width: 150px;
   text-decoration: none;
-  color: #000000;
-  background-color: #efefef;
-  border: 1px solid #000000;
-  border-radius: 5px;
+  color: #ffffff;
+  background-color: #5f7dd0;
+  border: none;
+  border-radius: 10px;
 }
 
 .button:hover {
-  background-color: #bfbfbf;
+  background-color: #5875c3;
 }
 
 .buttons {

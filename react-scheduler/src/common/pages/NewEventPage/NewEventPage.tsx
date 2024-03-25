@@ -208,7 +208,7 @@ function NewEventPage() {
                   components={animatedComponents}
                   options={timeOptions}
                   onChange={onChange}
-                  maxMenuHeight={100}
+                  maxMenuHeight={140}
                   styles={{
                     control: (baseStyles) => ({
                       ...baseStyles,

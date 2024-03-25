@@ -64,7 +64,7 @@ export const TableCell: FC<ITableCell> = ({ event, day, time }) => {
       <td
         className={isDragging ? "dragging" : ""}
         ref={ref}
-        style={{ background: "#efefef" }}
+        // style={{ background: "#efefef" }}
       >
         {event && (
           <div className={styles.card}>

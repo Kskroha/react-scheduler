@@ -21,10 +21,10 @@
   padding: 10px 10px;
   height: 50px;
   text-decoration: none;
-  color: #000000;
-  background-color: #efefef;
-  border: 1px solid #000000;
-  border-radius: 5px;
+  color: #ffffff;
+  background-color: #5f7dd0;
+  border: none;
+  border-radius: 10px;
 }
 
 .link:hover {

@@ -1,7 +1,7 @@
 .table {
   width: 100%;
   margin-bottom: 20px;
-  border: 1px solid #dddddd;
+  border: 1px solid #ffffff;
   border-collapse: collapse; 
   table-layout: fixed;
 }
@@ -9,7 +9,7 @@
 .table th {
 	font-weight: bold;
 	padding: 5px;
-	background: #efefef;
+	background: #ffffff;
 	border: 1px solid #000000;
   text-align: center;
 }
@@ -17,7 +17,7 @@
 .table td {
   width: 80px;
   height: 80px;
-	background: #efefef;
+	background: #ffffff;
   font-weight: bold;
   text-align: center;
 	border: 1px solid #000000;

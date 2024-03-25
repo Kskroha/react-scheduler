@@ -1,27 +1,43 @@
 .button {
+  opacity: 0;
+  position: absolute;
+  font-size: 17px;
+  top: 5px;
+  right: 5px;
   background-color: transparent;
   border: none;
-}
-
-.button:hover {
-  opacity: 0.5;
+  color: #ffffff;
 }
 
 .card {
-  background: #b5e386;
+  background: #5f7dd0;
+  color: #ffffff;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  border-radius: 3px;
 }
 
 .cardInner {
-  padding: 5px;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.cardInner:hover {
+  cursor: pointer;
 }
 
 .cardName {
   margin: 0;
   display: block;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 400;
+}
+
+.cardInner:hover .button {
+  opacity: 1;
 }
