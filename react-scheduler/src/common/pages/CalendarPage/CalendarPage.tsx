@@ -52,7 +52,7 @@ function CalendarPage() {
                 </td>
                 {DAYS.map((day) => {
                   const schedule = events.find(
-                    (event) => event.day === day && event.time === hour
+                    (event) => event.day.value === day && event.time.value === hour
                   );
                   return (
                     <TableCell

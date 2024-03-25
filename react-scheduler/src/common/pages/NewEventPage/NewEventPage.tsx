@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { DAYS, HOURS, MEMBERS } from "../../mocks/constants";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import {
@@ -9,47 +8,68 @@ import {
 import { useNavigate } from "react-router-dom";
 import styles from "./NewEvent.module.css";
 import Alert from "react-bootstrap/Alert";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
-enum ParticipantsEnum {
-  Ann = "Ann",
-  Maria = "Maria",
-  Bob = "Bob",
-  Max = "Max",
-  Alex = "Alex",
-}
+const animatedComponents = makeAnimated();
 
-type Time = "10:00" | "11:00" | "12:00" | "13:00" | "14:00" | "15:00";
+const participantOptions = [
+  { value: "Anna", label: "Anna 👩‍🦱" },
+  { value: "Maria", label: "Maria 🦄" },
+  { value: "Bob", label: "Bob 👦" },
+  { value: "Alex", label: "Alex 😎" },
+];
 
-enum DayEnum {
-  Monday = "Monday",
-  Tuesday = "Tuesday",
-  Wednesday = "Wednesday",
-  Thursday = "Thursday",
-  Friday = "Friday",
-}
+const timeOptions = [
+  { value: "10:00", label: "10:00" },
+  { value: "11:00", label: "11:00" },
+  { value: "12:00", label: "12:00" },
+  { value: "13:00", label: "13:00" },
+  { value: "14:00", label: "14:00" },
+  { value: "15:00", label: "15:00" },
+];
 
-interface IFormInput {
-  eventName: string;
-  participants: ParticipantsEnum;
-  day: DayEnum;
-  time: Time;
-}
+const dayOptions = [
+  { value: "Monday", label: "Monday" },
+  { value: "Tuesday", label: "Tuesday" },
+  { value: "Wednesday", label: "Wednesday" },
+  { value: "Thursday", label: "Thursday" },
+  { value: "Friday", label: "Friday" },
+];
 
-// ZOD
+const schema = z.object({
+  eventName: z
+    .string()
+    .min(5, { message: "Must be 5 or more characters long" }),
+  participants: z.array(
+    z.object({
+      value: z.string(),
+      label: z.string(),
+    })
+  ),
+  day: z.object({
+    value: z.string(),
+    label: z.string(),
+  }),
+  time: z.object({
+    value: z.string(),
+    label: z.string(),
+  }),
+});
+
+type FormFields = z.infer<typeof schema>;
 
 function NewEventPage() {
   const {
     register,
-    formState: { errors },
     handleSubmit,
-  } = useForm({
-    defaultValues: {
-      eventName: "Meeting",
-      participants: [],
-      day: "Monday",
-      time: "10:00",
-    },
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({
+    resolver: zodResolver(schema),
   });
 
   const dispatch = useAppDispatch();
@@ -61,17 +81,7 @@ function NewEventPage() {
     (state) => state.schedule.createEventFailed
   );
 
-  const createOptions = (array: string[] | number[]) => {
-    return array.map((text: string | number, index: number) => {
-      return (
-        <option key={index} value={text}>
-          {text}
-        </option>
-      );
-    });
-  };
-
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<FormFields> = (data) => {
     console.log(data);
     dispatch(
       createEvent({
@@ -117,13 +127,7 @@ function NewEventPage() {
           )}
           <div className={styles.field}>
             <label htmlFor="eventName">Name of the event:</label>
-            <input
-              {...register("eventName", {
-                required: "Event name is required",
-                minLength: 3,
-                maxLength: 20,
-              })}
-            />
+            <input {...register("eventName")} />
           </div>
 
           {errors.participants && (
@@ -133,14 +137,22 @@ function NewEventPage() {
           )}
           <div className={styles.field}>
             <label htmlFor="participants">Participants:</label>
-            <select
-              {...register("participants", {
-                required: "Please choose participants",
-              })}
-              multiple
-            >
-              {createOptions(MEMBERS)}
-            </select>
+            <Controller
+              control={control}
+              name="participants"
+              rules={{ required: true }}
+              render={({ field: { onChange, value, name } }) => (
+                <Select
+                  name={name}
+                  value={value}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  isMulti
+                  options={participantOptions}
+                  onChange={onChange}
+                />
+              )}
+            />
           </div>
 
           {errors.day && (
@@ -149,10 +161,22 @@ function NewEventPage() {
             </p>
           )}
           <div className={styles.field}>
-            <label htmlFor="day">Day:</label>
-            <select {...register("day", { required: "Day is required" })}>
-              {createOptions(DAYS)}
-            </select>
+            <label htmlFor="time">Day:</label>
+            <Controller
+              control={control}
+              name="day"
+              rules={{ required: true }}
+              render={({ field: { onChange, value, name } }) => (
+                <Select
+                  name={name}
+                  value={value}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  options={dayOptions}
+                  onChange={onChange}
+                />
+              )}
+            />
           </div>
 
           {errors.time && (
@@ -162,14 +186,26 @@ function NewEventPage() {
           )}
           <div className={styles.field}>
             <label htmlFor="time">Time:</label>
-            <select {...register("time", { required: "Time is required" })}>
-              {createOptions(HOURS)}
-            </select>
+            <Controller
+              control={control}
+              name="time"
+              rules={{ required: true }}
+              render={({ field: { onChange, value, name } }) => (
+                <Select
+                  name={name}
+                  value={value}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  options={timeOptions}
+                  onChange={onChange}
+                />
+              )}
+            />
           </div>
 
           <div className={styles.buttons}>
             <button
-              // disabled={!isFormValid}
+              disabled={isSubmitting}
               className={styles.button}
               type="submit"
             >

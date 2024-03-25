@@ -24,8 +24,8 @@ export const scheduleSlice = createSlice({
       if (
         state.events.some(
           (event) =>
-            event.day === action.payload.day &&
-            event.time === action.payload.time
+            event.day.value === action.payload.day.value &&
+            event.time.value === action.payload.time.value
         )
       ) {
         state.createEventFailed = true;

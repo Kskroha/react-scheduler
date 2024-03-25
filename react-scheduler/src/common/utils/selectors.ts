@@ -13,6 +13,6 @@ export const getFilteredEvents = createSelector(
       return events;
     }
 
-    return events.filter((event) => event.participants.includes(activeFilter));
+    return events.filter((event) => event.participants.some((participant) => participant.value === activeFilter));
   }
 );

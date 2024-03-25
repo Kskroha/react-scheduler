@@ -19,7 +19,11 @@ export const TableCell: FC<ITableCell> = ({ event, day, time }) => {
 
   const ref = useRef<HTMLTableCellElement>(null);
 
-  const [{ isDragging }, drop] = useDrop<TEvent, undefined, { isDragging: boolean }>({
+  const [{ isDragging }, drop] = useDrop<
+    TEvent,
+    undefined,
+    { isDragging: boolean }
+  >({
     accept: "cell",
     collect(monitor) {
       return {
@@ -35,8 +39,8 @@ export const TableCell: FC<ITableCell> = ({ event, day, time }) => {
       dispatch(
         createEvent({
           ...item,
-          day,
-          time,
+          day: {value: day, label: day},
+          time: {value: time, label: time},
         })
       );
     },
