@@ -150,6 +150,12 @@ function NewEventPage() {
                   isMulti
                   options={participantOptions}
                   onChange={onChange}
+                  styles={{
+                    control: (baseStyles) => ({
+                      ...baseStyles,
+                      width: "180px",
+                    }),
+                  }}
                 />
               )}
             />
@@ -173,6 +179,12 @@ function NewEventPage() {
                   components={animatedComponents}
                   options={dayOptions}
                   onChange={onChange}
+                  styles={{
+                    control: (baseStyles) => ({
+                      ...baseStyles,
+                      width: "180px"
+                    }),
+                  }}
                 />
               )}
             />
@@ -197,6 +209,12 @@ function NewEventPage() {
                   options={timeOptions}
                   onChange={onChange}
                   maxMenuHeight={100}
+                  styles={{
+                    control: (baseStyles) => ({
+                      ...baseStyles,
+                      width: "180px"
+                    }),
+                  }}
                 />
               )}
             />
