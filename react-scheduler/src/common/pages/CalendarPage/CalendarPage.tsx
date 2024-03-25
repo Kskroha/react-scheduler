@@ -1,16 +1,13 @@
 // import Table from "react-bootstrap/Table";
-import { DAYS, HOURS, MEMBERS } from "../../mocks/constants";
-import TableCell from "../../components/TableCell";
 import { NavLink } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch } from "../../hooks/hooks";
 import styles from "./CalendarPage.module.css";
 import { setActiveFilter } from "../../../features/schedule/scheduleSlice";
-import { getFilteredEvents } from "../../utils/selectors";
+import { Table } from "../../components/Table/Table";
+import { MEMBERS } from "../../mocks/constants";
 
 function CalendarPage() {
   const dispatch = useAppDispatch();
-
-  const events = useAppSelector(getFilteredEvents);
 
   return (
     <div>
@@ -33,40 +30,7 @@ function CalendarPage() {
             New event +
           </NavLink>
         </div>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th className={styles.th}>Name</th>
-              {DAYS.map((day, index) => (
-                <th className={styles.th} key={index}>
-                  {day.slice(0, 3)}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {HOURS.map((hour) => (
-              <tr key={hour}>
-                <td className={styles.td} width="70">
-                  {hour}
-                </td>
-                {DAYS.map((day) => {
-                  const schedule = events.find(
-                    (event) => event.day.value === day && event.time.value === hour
-                  );
-                  return (
-                    <TableCell
-                      key={day + hour}
-                      event={schedule ?? null}
-                      day={day}
-                      time={hour}
-                    />
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table />
       </main>
     </div>
   );

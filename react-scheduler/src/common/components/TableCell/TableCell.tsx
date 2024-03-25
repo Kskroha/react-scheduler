@@ -1,10 +1,10 @@
 import { FC, useRef } from "react";
-import { TEvent } from "../../types/types";
+import { TEvent } from "../../../types/types";
 import {
   createEvent,
   deleteEvent,
-} from "../../features/schedule/scheduleSlice";
-import { useAppDispatch } from "../hooks/hooks";
+} from "../../../features/schedule/scheduleSlice";
+import { useAppDispatch } from "../../hooks/hooks";
 import styles from "./TableCell.module.css";
 import { useDrag, useDrop } from "react-dnd";
 
