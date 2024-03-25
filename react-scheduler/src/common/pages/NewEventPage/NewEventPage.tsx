@@ -170,7 +170,6 @@ function NewEventPage() {
                 <Select
                   name={name}
                   value={value}
-                  closeMenuOnSelect={false}
                   components={animatedComponents}
                   options={dayOptions}
                   onChange={onChange}
@@ -194,10 +193,10 @@ function NewEventPage() {
                 <Select
                   name={name}
                   value={value}
-                  closeMenuOnSelect={false}
                   components={animatedComponents}
                   options={timeOptions}
                   onChange={onChange}
+                  maxMenuHeight={100}
                 />
               )}
             />

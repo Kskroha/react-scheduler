@@ -12,12 +12,14 @@
 .buttons {
   margin-left: auto;
   display: flex;
+  align-items: center;
   gap: 20px;
   margin-bottom: 10px;
 }
 
 .link {
   padding: 10px 10px;
+  height: 50px;
   text-decoration: none;
   color: #000000;
   background-color: #efefef;
