@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { setActiveFilter } from "../../../features/schedule/scheduleSlice";
 import { useAppDispatch } from "../../hooks/hooks";
-import Select from "react-select";
+import Select, {type SingleValue} from "react-select";
 
 export const FilterSelect: FC = () => {
   const dispatch = useAppDispatch();
@@ -14,13 +14,19 @@ export const FilterSelect: FC = () => {
     { value: "Alex", label: "Alex 😎" },
   ];
 
+  const handleOnChange = (option: SingleValue<{value: string, label: string}>) => {
+    if (!option) {
+      return;
+    }
+
+    dispatch(setActiveFilter(option.value));
+  };
+
   return (
     <Select
       name="filter"
       id="filter"
-      onChange={(option) =>
-        dispatch(setActiveFilter(option!.value))
-      }
+      onChange={handleOnChange}
       options={participantOptions}
     />
   );
