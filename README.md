@@ -52,4 +52,4 @@ npm run build
 ## Источники
 Текст тестового задания располагается по ссылке:
 
-(https://chatbullet.com/work/test-task-for-react-dev)
+https://chatbullet.com/work/test-task-for-react-dev
