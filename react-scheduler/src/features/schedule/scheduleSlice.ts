@@ -42,6 +42,7 @@ export const scheduleSlice = createSlice({
     updateState: (state) => {
       state.createEventFailed = false;
       state.createEventSuccess = false;
+      state.activeFilter = "all";
     },
     setActiveFilter: (state, action: PayloadAction<string>) => {
       state.activeFilter = action.payload;

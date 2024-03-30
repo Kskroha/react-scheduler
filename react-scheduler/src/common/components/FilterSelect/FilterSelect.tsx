@@ -2,17 +2,10 @@ import { FC } from "react";
 import { setActiveFilter } from "../../../features/schedule/scheduleSlice";
 import { useAppDispatch } from "../../hooks/hooks";
 import Select, {type SingleValue} from "react-select";
+import { FILTER_OPTIONS } from "../../mocks/constants";
 
 export const FilterSelect: FC = () => {
   const dispatch = useAppDispatch();
-
-  const participantOptions = [
-    { value: "all", label: "All" },
-    { value: "Anna", label: "Anna 👩‍🦱" },
-    { value: "Maria", label: "Maria 🦄" },
-    { value: "Bob", label: "Bob 👦" },
-    { value: "Alex", label: "Alex 😎" },
-  ];
 
   const handleOnChange = (option: SingleValue<{value: string, label: string}>) => {
     if (!option) {
@@ -26,8 +19,9 @@ export const FilterSelect: FC = () => {
     <Select
       name="filter"
       id="filter"
+      defaultValue={{value: "All", label: "All"}}
       onChange={handleOnChange}
-      options={participantOptions}
+      options={FILTER_OPTIONS}
     />
   );
 };

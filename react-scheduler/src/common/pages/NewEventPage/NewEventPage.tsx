@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import {
@@ -8,37 +7,16 @@ import {
 import { useNavigate } from "react-router-dom";
 import styles from "./NewEvent.module.css";
 import Alert from "react-bootstrap/Alert";
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
-
-const animatedComponents = makeAnimated();
-
-const participantOptions = [
-  { value: "Anna", label: "Anna 👩‍🦱" },
-  { value: "Maria", label: "Maria 🦄" },
-  { value: "Bob", label: "Bob 👦" },
-  { value: "Alex", label: "Alex 😎" },
-];
-
-const timeOptions = [
-  { value: "10:00", label: "10:00" },
-  { value: "11:00", label: "11:00" },
-  { value: "12:00", label: "12:00" },
-  { value: "13:00", label: "13:00" },
-  { value: "14:00", label: "14:00" },
-  { value: "15:00", label: "15:00" },
-];
-
-const dayOptions = [
-  { value: "Monday", label: "Monday" },
-  { value: "Tuesday", label: "Tuesday" },
-  { value: "Wednesday", label: "Wednesday" },
-  { value: "Thursday", label: "Thursday" },
-  { value: "Friday", label: "Friday" },
-];
+import {
+  DAY_OPTIONS,
+  PARTICIPANT_OPTIONS,
+  TIME_OPTIONS,
+} from "../../mocks/constants";
+import { OptionSelect } from "../../components/OptionSelect/OptionSelect";
+import { ErrorAlert } from "../../components/ErrorAlert/ErrorAlert";
 
 const schema = z.object({
   eventName: z
@@ -60,7 +38,7 @@ const schema = z.object({
   }),
 });
 
-type FormFields = z.infer<typeof schema>;
+export type FormFields = z.infer<typeof schema>;
 
 function NewEventPage() {
   const {
@@ -74,22 +52,19 @@ function NewEventPage() {
 
   const dispatch = useAppDispatch();
 
-  const createEventSuccess = useAppSelector(
-    (state) => state.schedule.createEventSuccess
-  );
   const createEventFailed = useAppSelector(
     (state) => state.schedule.createEventFailed
   );
 
   const onSubmit: SubmitHandler<FormFields> = (data) => {
-    console.log(data);
     dispatch(
       createEvent({
         ...data,
         id: uuidv4(),
       })
     );
-    setTimeout(() => dispatch(updateState()), 1000);
+    dispatch(updateState());
+    navigate(-1);
   };
 
   const navigate = useNavigate();
@@ -97,12 +72,6 @@ function NewEventPage() {
   const handleClick = () => {
     navigate(-1);
   };
-
-  useEffect(() => {
-    if (createEventSuccess) {
-      navigate(-1);
-    }
-  }, [createEventSuccess, navigate]);
 
   return (
     <div className={styles.page}>
@@ -114,111 +83,60 @@ function NewEventPage() {
         )}
         <h1>Create new event</h1>
         <form
-          action="/"
-          method="post"
           onSubmit={handleSubmit(onSubmit)}
           autoComplete="off"
           className={styles.form}
         >
-          {errors.eventName && (
-            <p className={styles.error} role="alert">
-              {errors.eventName.message}
-            </p>
-          )}
+          <ErrorAlert
+            errorType={errors.eventName}
+            className={styles.error}
+            message={errors.eventName?.message}
+          />
+
           <div className={styles.field}>
             <label htmlFor="eventName">Name of the event:</label>
             <input {...register("eventName")} />
           </div>
 
-          {errors.participants && (
-            <p className={styles.error} role="alert">
-              {errors.participants.message}
-            </p>
-          )}
-          <div className={styles.field}>
-            <label htmlFor="participants">Participants:</label>
-            <Controller
-              control={control}
-              name="participants"
-              rules={{ required: true }}
-              render={({ field: { onChange, value, name } }) => (
-                <Select
-                  name={name}
-                  value={value}
-                  closeMenuOnSelect={false}
-                  components={animatedComponents}
-                  isMulti
-                  options={participantOptions}
-                  onChange={onChange}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      width: "180px",
-                    }),
-                  }}
-                />
-              )}
-            />
-          </div>
+          <ErrorAlert
+            errorType={errors.participants}
+            className={styles.error}
+            message={errors.participants?.message}
+          />
+          <OptionSelect
+            control={control}
+            options={PARTICIPANT_OPTIONS}
+            className={styles.field}
+            label="Participants:"
+            name="participants"
+            isMulti={true}
+          />
 
-          {errors.day && (
-            <p className={styles.error} role="alert">
-              {errors.day.message}
-            </p>
-          )}
-          <div className={styles.field}>
-            <label htmlFor="time">Day:</label>
-            <Controller
-              control={control}
-              name="day"
-              rules={{ required: true }}
-              render={({ field: { onChange, value, name } }) => (
-                <Select
-                  name={name}
-                  value={value}
-                  components={animatedComponents}
-                  options={dayOptions}
-                  onChange={onChange}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      width: "180px"
-                    }),
-                  }}
-                />
-              )}
-            />
-          </div>
+          <ErrorAlert
+            errorType={errors.day}
+            className={styles.error}
+            message={errors.day?.message}
+          />
+          <OptionSelect
+            control={control}
+            options={DAY_OPTIONS}
+            className={styles.field}
+            label="Day:"
+            name="day"
+          />
 
-          {errors.time && (
-            <p className={styles.error} role="alert">
-              {errors.time.message}
-            </p>
-          )}
-          <div className={styles.field}>
-            <label htmlFor="time">Time:</label>
-            <Controller
-              control={control}
-              name="time"
-              rules={{ required: true }}
-              render={({ field: { onChange, value, name } }) => (
-                <Select
-                  name={name}
-                  value={value}
-                  components={animatedComponents}
-                  options={timeOptions}
-                  onChange={onChange}
-                  maxMenuHeight={140}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      width: "180px"
-                    }),
-                  }}
-                />
-              )}
-            />
-          </div>
+          <ErrorAlert
+            errorType={errors.time}
+            className={styles.error}
+            message={errors.time?.message}
+          />
+          <OptionSelect
+            control={control}
+            options={TIME_OPTIONS}
+            className={styles.field}
+            label="Time:"
+            name="time"
+          />
 
           <div className={styles.buttons}>
             <button
