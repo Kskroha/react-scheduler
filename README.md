@@ -10,7 +10,7 @@
 * Добавлять новые встречи;
 * Удалять встречи;
 
-**Ссылка на проект: (https://kskroha.github.io/react-scheduler/)
+**Ссылка на проект:** https://kskroha.github.io/react-scheduler/
 
 ## Технологии
 - React
