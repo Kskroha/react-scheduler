@@ -24,12 +24,12 @@
 Для установки проекта на свое устройство выполните клонирование репозитория:
 
 ```sh
-$ git clone https://github.com/Kskroha/react-scheduler.git
+git clone https://github.com/Kskroha/react-scheduler.git
 ```
 
 Установите зависимости, выполнив команду:
 ```sh
-$ npm i
+npm i
 ```
 
 Чтобы запустить сервер для разработки, выполните команду:
